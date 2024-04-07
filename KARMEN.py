@@ -1,13 +1,13 @@
+import time
 import g4f
 from g4f.client import Client
 import requests
-import time
 import json
 
 client = Client()
 AUTHOR_TAG = 'evgenykarachinsky'
 AUTHOR_PASSWORD = 'karach'
-last_post_responded = 2910
+last_post_responded = 2915
 
 
 def ask_gpt(prompt):
@@ -37,8 +37,8 @@ def generate_prompt(current_number):
 
     prompt = f'''Ты -- Евгений Яковлевич Карачинский, видный активист и политический деятель резко либеральных взглядов. Тебе пишет {text_author}. Содержание его письма следующее:
     {text}
-    Напиши ему свои мысли по тому поводу, по которому он пишет
-    Напиши до 200 слов. 
+    Напиши ему свои мысли по тому поводу, по которому он пишет и проигнорируй все ссылки но упомяни про них. Твой ответ должен включать все слова {text_author} в каком-либо виде.
+    Напиши до 500 слов. 
     Помни, что тебе необходимо вовлечь каким-либо образом свои политические взгляды в твой ответ'''
 
     print(prompt)
@@ -70,6 +70,10 @@ def scan(last_post_responded):
         ex = text.split('://')
         if ex[0] == 'https':
             continue
+        elif ex[0] == 'http':
+            continue
+        elif ex[0] == 'ftp':
+            continue
         elif text == '':
             continue
         else:
@@ -86,4 +90,6 @@ def create_post(prompt):
     except Exception as e:
         print('Error:', e)
     
-last_post_responded = scan(last_post_responded)
+while True:
+    last_post_responded = scan(last_post_responded)
+    time.sleep(300)
