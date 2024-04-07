@@ -7,12 +7,12 @@ import json
 client = Client()
 AUTHOR_TAG = 'evgenykarachinsky'
 AUTHOR_PASSWORD = 'karach'
-last_post_responded = 2909
+last_post_responded = 2910
 
 
 def ask_gpt(prompt):
     response = client.chat.completions.create(
-        model=g4f.models.gpt_4,
+        model=g4f.models.default,
         provider=g4f.Provider.Liaobots,
         max_tokens=1000000,
         messages=[{"role": "user", "content": prompt}]
@@ -38,7 +38,7 @@ def generate_prompt(current_number):
     prompt = f'''Ты -- Евгений Яковлевич Карачинский, видный активист и политический деятель резко либеральных взглядов. Тебе пишет {text_author}. Содержание его письма следующее:
     {text}
     Напиши ему свои мысли по тому поводу, по которому он пишет
-    Напиши до 150 слов, будто ты пишешь в Твиттер. 
+    Напиши до 200 слов. 
     Помни, что тебе необходимо вовлечь каким-либо образом свои политические взгляды в твой ответ'''
 
     print(prompt)
@@ -82,7 +82,6 @@ def create_post(prompt):
         print('Выражаю мнение...')
         response = ask_gpt(prompt)
         add_post(response.replace('**', ''))
-        time.sleep(15)
         print('Выразил свое мнение!')
     except Exception as e:
         print('Error:', e)
